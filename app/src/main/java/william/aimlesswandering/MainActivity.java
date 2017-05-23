@@ -13,8 +13,12 @@ import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.PopupWindow;
 
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -30,8 +34,10 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
     Intent intent;
 
     public GoogleMap mMap;
-
     public PolylineOptions track;
+
+    LayoutInflater inflater;
+    View layout;
 
     private Button button0;
     private Button button1;
@@ -213,16 +219,37 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
             }
         });
 
+        inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        layout = inflater.inflate(R.layout.marker_popup, (ViewGroup)findViewById(R.id.popup_element));
+
         button2 = (Button)findViewById(R.id.button_2);
         button2.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                mMap.addMarker(new MarkerOptions().position(locationClass.mCurrentLocation).title("Test Marker"));
+                showPopup();
+                if (locationClass.mCurrentLocation != null) {
+                    mMap.addMarker(new MarkerOptions().position(locationClass.mCurrentLocation).title("Test Marker"));
+                }
             }
         });
 
         locationClass = new LocationClass(this);
 
         Log.e("MainActivity", "onCreate");
+    }
+
+    PopupWindow popupWindow;
+    private void showPopup(){
+        Button buttonclosepop = (Button)layout.findViewById(R.id.button_close_pop);
+        popupWindow = new PopupWindow(layout,480,500,true);
+        popupWindow.showAtLocation(layout, Gravity.CENTER, 0, 40);
+        buttonclosepop.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View arg0) {
+                // TODO Auto-generated method stub
+                popupWindow.dismiss();
+            }
+        });
     }
 
     @Override
