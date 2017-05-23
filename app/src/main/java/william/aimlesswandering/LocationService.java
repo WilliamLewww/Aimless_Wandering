@@ -1,17 +1,11 @@
 package william.aimlesswandering;
 
-import android.app.Notification;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Binder;
 import android.os.IBinder;
-import android.support.v4.app.NotificationCompat;
 import android.util.Log;
-
-import com.google.android.gms.common.api.GoogleApiClient;
 
 public class LocationService extends Service {
     public LocationClass locationClass;

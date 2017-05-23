@@ -19,6 +19,7 @@ import android.widget.Button;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.gson.Gson;
 
@@ -121,7 +122,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         if (locationService != null) {
             locationService.locationClass.stopLocationUpdates();
             mMap.clear();
-            if (locationService.locationClass.tempTrack.getPoints().size() > 0 && !track.getPoints().get(track.getPoints().size() - 1).equals(locationService.locationClass.tempTrack.getPoints().get(0))) {
+            if (locationService.locationClass.tempTrack.getPoints().size() > 0 && track.getPoints().size() > 0 && !track.getPoints().get(track.getPoints().size() - 1).equals(locationService.locationClass.tempTrack.getPoints().get(0))) {
                 track.addAll(locationService.locationClass.tempTrack.getPoints().subList(1, locationService.locationClass.tempTrack.getPoints().size()));
             }
             else {
@@ -215,7 +216,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         button2 = (Button)findViewById(R.id.button_2);
         button2.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                Log.e("Track", "" + track.getPoints().size());
+                mMap.addMarker(new MarkerOptions().position(locationClass.mCurrentLocation).title("Test Marker"));
             }
         });
 

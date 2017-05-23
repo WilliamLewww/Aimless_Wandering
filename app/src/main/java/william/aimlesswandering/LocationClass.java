@@ -31,6 +31,8 @@ public class LocationClass implements ConnectionCallbacks, OnConnectionFailedLis
 
     boolean isConnected = false;
 
+    final int refresh_rate = 5000, refresh_rate_fast = 2500;
+
     public LocationClass(MainActivity activity) {
         this.activity = activity;
 
@@ -60,8 +62,8 @@ public class LocationClass implements ConnectionCallbacks, OnConnectionFailedLis
         }
 
         mLocationRequest = new LocationRequest();
-        mLocationRequest.setInterval(10000);
-        mLocationRequest.setFastestInterval(5000);
+        mLocationRequest.setInterval(refresh_rate);
+        mLocationRequest.setFastestInterval(refresh_rate_fast);
         mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
 
         mGoogleApiClient.connect();
@@ -85,7 +87,7 @@ public class LocationClass implements ConnectionCallbacks, OnConnectionFailedLis
                 ActivityCompat.requestPermissions(activity, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 99);
             } else {
                 activity.mMap.setMyLocationEnabled(true);
-                //LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
+                LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
             }
         }
         else {
@@ -104,6 +106,9 @@ public class LocationClass implements ConnectionCallbacks, OnConnectionFailedLis
                     activity.track.add(mCurrentLocation);
                     activity.mMap.addPolyline(activity.track);
                 }
+            }
+            else {
+                stopLocationUpdates();
             }
         }
         else {
